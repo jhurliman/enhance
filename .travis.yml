@@ -1,52 +1,53 @@
 language: node_js
 node_js:
-  - "9"
-
+- '9'
 matrix:
   include:
-    - os: osx
-      osx_image: xcode9.3
-      env:
-        - ELECTRON_CACHE=$HOME/.cache/electron
-        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
-
-    - os: linux
-      services: docker
-      language: generic
-
+  - os: osx
+    osx_image: xcode9.3
+    env:
+    - ELECTRON_CACHE=$HOME/.cache/electron
+    - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+  - os: linux
+    services: docker
+    language: generic
 cache:
   directories:
   - node_modules
-  - $HOME/.cache/electron
-  - $HOME/.cache/electron-builder
-
+  - "$HOME/.cache/electron"
+  - "$HOME/.cache/electron-builder"
 before_install:
-  - |
-    if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-      mkdir -p /tmp/git-lfs && curl -L https://github.com/github/git-lfs/releases/download/v2.3.1/git-lfs-$([ "$TRAVIS_OS_NAME" == "linux" ] && echo "linux" || echo "darwin")-amd64-2.3.1.tar.gz | tar -xz -C /tmp/git-lfs --strip-components 1
-      export PATH="/tmp/git-lfs:$PATH"
-    fi
-
+- |
+  if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+    mkdir -p /tmp/git-lfs && curl -L https://github.com/github/git-lfs/releases/download/v2.3.1/git-lfs-$([ "$TRAVIS_OS_NAME" == "linux" ] && echo "linux" || echo "darwin")-amd64-2.3.1.tar.gz | tar -xz -C /tmp/git-lfs --strip-components 1
+    export PATH="/tmp/git-lfs:$PATH"
+  fi
 before_script:
-  - git lfs pull
-
+- git lfs pull
 script:
-  - |
-    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-      docker run --rm \
-        --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS|APPVEYOR_|CSC_|_TOKEN|_KEY|AWS_|STRIP|BUILD_') \
-        -v ${PWD}:/project \
-        -v ~/.cache/electron:/root/.cache/electron \
-        -v ~/.cache/electron-builder:/root/.cache/electron-builder \
-        electronuserland/builder:wine \
-        /bin/bash -c "npm run release --linux --win"
-    else
-      npm run release
-    fi
-
+- |
+  if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+    docker run --rm \
+      --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS|APPVEYOR_|CSC_|_TOKEN|_KEY|AWS_|STRIP|BUILD_') \
+      -v ${PWD}:/project \
+      -v ~/.cache/electron:/root/.cache/electron \
+      -v ~/.cache/electron-builder:/root/.cache/electron-builder \
+      electronuserland/builder:wine \
+      /bin/bash -c "npm run release --linux --win"
+  else
+    npm run release
+  fi
 before_cache:
-  - rm -rf $HOME/.cache/electron-builder/wine
-
+- rm -rf $HOME/.cache/electron-builder/wine
 branches:
   only:
-    - master
+  - master
+deploy:
+  provider: releases
+  api_key:
+    secure: LiTB0r6w0Hwo/dqdrkwTd4jL9LHFszVRoOzYkrBqpUwWYioiVcMrzOvkI1byCzZBm+cwSSMMfdJ+HTn254GqN5I4y7gIQr2/B96fxIczhDlorReAK5WvF1OOWT75Uefo23ynLa9w44S1uMx7HQGBTFcSSuIg4y12oikxO9ZP+e6lD0LFoFYLbGZ5JZnd2DLM+vY9qvnJgVhmBATzMxhnHlkKTrVKmLz3QK4JO/JNn4jFz7jiK8gAUhbFak1W0Xf4AsAT5lvWDtqzVCSDSO2r0Yq4cAuOrwqqDgSMKRhmRkPBXaQFGQ0k1RYL8KjkBnwuXo+2W5FRuN/a/QOe7oX1g1M258014Qaumlx+WIUZZnjzC+k+YY0dn56F/yL4Zyk5mHhyYl+tt0LnEx1Nt+O9RPE8go2KLOOka0VJCGAj+X8YkUiIWx/2dXikB0j9X4YcJKlameNCYzibW7zZH9uArH2Ayb4qh3Fjes4cbMj87csePGjUU8znfuPeNMpk/v3zeFoz6em0/C8rPryJwR8olldffA3ZogkOb5Vsr9IGzsPWv6J1HDllKRbieGGz8XMWoYZhdunwXv9mx/rBj2Q61iQuXRw4DfFWEmlS0IYF0Qpce/cM9ZbV7Xefk9u7pfXuWgPdQsq2xK1gKDkcJlAebP8IwusLo4NWDnmQ/66uRU8=
+  file_glob: true
+  file: dist/*
+  skip_cleanup: true
+  on:
+    tags: true
