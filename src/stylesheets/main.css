@@ -29,7 +29,7 @@ a {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: green;
+  background-color: rgb(25, 33, 49);
 }
 
 #image {
@@ -39,10 +39,19 @@ a {
   image-rendering: pixelated;
 }
 
+button {
+  background-color: rgb(40, 63, 104);
+  border: 0;
+}
+
+button:hover {
+  background-color: rgb(93, 126, 159);
+}
+
 #zoom-out {
   position: absolute;
   top: 10px;
-  right: 10px;
+  right: 74px;
   width: 64px;
   height: 64px;
 }
@@ -50,7 +59,7 @@ a {
 #zoom-in {
   position: absolute;
   top: 10px;
-  right: 74px;
+  right: 10px;
   width: 64px;
   height: 64px;
 }
