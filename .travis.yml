@@ -1,9 +1,14 @@
+language: node_js
+node_js:
+  - "9"
+os:
+  - osx
+  - linux
+
 matrix:
   include:
     - os: osx
       osx_image: xcode9.3
-      language: node_js
-      node_js: "9"
       env:
         - ELECTRON_CACHE=$HOME/.cache/electron
         - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
@@ -46,5 +51,5 @@ before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine
 
 branches:
-  except:
-    - "/^v\\d+\\.\\d+\\.\\d+$/" a
+  only:
+    - master
