@@ -54,5 +54,4 @@ deploy:
   skip_cleanup: true
   on:
     repo: jhurliman/enhance
-    branch: master
     tags: true
