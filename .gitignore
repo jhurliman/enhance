@@ -57,3 +57,13 @@ typings/
 # dotenv environment variables file
 .env
 
+.DS_Store
+Thumbs.db
+
+/dist
+/temp
+
+# ignore everything in 'app' folder that is generated from 'src' folder
+/app/app.js
+/app/background.js
+/app/**/*.map
