@@ -2,7 +2,7 @@
   "name": "enhance",
   "productName": "enhance",
   "description": "https://www.youtube.com/watch?v=qHepKd38pr0",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "John Hurliman <jhurliman@jhurliman.org>",
   "main": "app/background.js",
   "build": {
