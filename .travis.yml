@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-- '9'
+- '10'
 matrix:
   include:
   - os: osx
@@ -14,6 +14,7 @@ matrix:
 cache:
   directories:
   - node_modules
+  - "$HOME/.npm"
   - "$HOME/.cache/electron"
   - "$HOME/.cache/electron-builder"
 before_install:
@@ -22,6 +23,8 @@ before_install:
     mkdir -p /tmp/git-lfs && curl -L https://github.com/github/git-lfs/releases/download/v2.3.1/git-lfs-$([ "$TRAVIS_OS_NAME" == "linux" ] && echo "linux" || echo "darwin")-amd64-2.3.1.tar.gz | tar -xz -C /tmp/git-lfs --strip-components 1
     export PATH="/tmp/git-lfs:$PATH"
   fi
+install:
+- npm ci
 before_script:
 - git lfs pull
 script:
@@ -50,4 +53,6 @@ deploy:
   file: dist/*
   skip_cleanup: true
   on:
+    repo: jhurliman/enhance
+    branch: master
     tags: true
