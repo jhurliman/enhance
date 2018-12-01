@@ -32,11 +32,15 @@ a {
   background-color: rgb(25, 33, 49);
 }
 
-#image {
+#surface {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
   width: 100%;
   border: 0;
   image-rendering: pixelated;
+  background-color: red;
 }
 
 button {
@@ -49,6 +53,14 @@ button:hover {
 }
 
 #zoom-out {
+  position: absolute;
+  top: 10px;
+  right: 138px;
+  width: 64px;
+  height: 64px;
+}
+
+#enhance {
   position: absolute;
   top: 10px;
   right: 74px;
